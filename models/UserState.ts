@@ -1,7 +1,9 @@
-class UserState {
-    name: string | undefined;
-    token: string | undefined;
-    tokenExpires: Date | undefined;
+import moment from "moment";
+
+interface UserState {
+    name: string;
+    token: string;
+    tokenExpires: moment.Moment;
 }
 
 export default UserState;
