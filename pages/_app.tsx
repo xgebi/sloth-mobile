@@ -1,12 +1,15 @@
 import '../styles/globals.css'
-import type { AppProps } from 'next/app'
-import {Provider, useStore} from 'react-redux'
-import { store } from '../store'
+import { AppProps } from 'next/app'
+import RootStore from '../store/RootStore'
+import { Provider } from "mobx-react";
 
-function MyApp({ Component, pageProps }: AppProps) {
-
+function MyApp({ Component, pageProps }: any) {
+  const rootStore = new RootStore();
   return (
-      <Provider store={store}>
+      <Provider
+        rootStore={rootStore}
+        userStore={rootStore.userStore}
+      >
         <Component {...pageProps} />
       </Provider>
   );
