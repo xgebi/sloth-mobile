@@ -15,7 +15,8 @@ const Home: any = inject("rootStore")(
     const userStore: UserStore = props.rootStore?.userStore!;
     const router = useRouter();
 
-    useEffect(() => useLoginRedirectEffect(userStore.isLoggedIn, router));
+    // When screens are ready, deal with login
+    // useEffect(() => useLoginRedirectEffect(userStore.isLoggedIn, router));
 
     return (
       <div>
