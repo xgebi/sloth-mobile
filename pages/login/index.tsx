@@ -1,12 +1,39 @@
 import type { NextPage } from "next";
 import Head from 'next/head'
 import {inject, observer} from "mobx-react";
-import React from "react";
+import React, {
+  ChangeEvent,
+  EventHandler, FormEvent,
+  FormEventHandler,
+  MouseEventHandler,
+  ReactEventHandler,
+  useState
+} from "react";
 import PageProps from "../PageProps";
 
 
 const Login: any = inject("rootStore")(
   observer((props: PageProps) => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const updateUsername = (event: ChangeEvent<HTMLInputElement>) => {
+      setUsername(event.target.value);
+    }
+
+    const updatePassword = (event: ChangeEvent<HTMLInputElement>) => {
+      setPassword(event.target.value);
+    }
+
+    const loginUserFormSubmit = (event: FormEvent<HTMLFormElement>): void  => {
+    }
+
+    const loginUserButton = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    }
+
+    const loginUser = () => {
+
+    }
 
     return (
       <div>
@@ -16,9 +43,20 @@ const Login: any = inject("rootStore")(
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <form>
+        <form onSubmit={loginUserFormSubmit}>
           <label htmlFor="username">Username:</label>
-          <input id="username" />
+          <input
+            id="username"
+            value={username}
+            onChange={updateUsername} />
+          <label htmlFor='password'>Password:</label>
+          <input
+            id="password"
+            type='password'
+            value={password}
+            onChange={updatePassword}
+          />
+          <button onClick={loginUserButton}>Login</button>
         </form>
       </div>
     );

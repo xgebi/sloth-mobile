@@ -1,13 +1,11 @@
 import {observable, computed, action, makeAutoObservable} from "mobx";
 import RootStore from "./RootStore";
-
-interface User {
-  name: string,
-  token: string,
-}
+import UserCredentials from "../services/interfaces/UserCredentials";
+import UserInformation from "../services/interfaces/UserInformation";
+import AuthenticationService from "../services/authentication.service";
 
 class UserStore {
-  @observable user: User;
+  @observable user: UserInformation;
   private rootStore: RootStore;
 
 
@@ -25,15 +23,8 @@ class UserStore {
   }
 
   @action
-  public logIn(token: string): boolean {
-    const splitToken = token.split(":");
-    if (splitToken.length === 2) {
-      this.user = {
-        name: splitToken[0],
-        token: splitToken[1]
-      }
-      return true;
-    }
+  public logIn(user: UserCredentials): boolean {
+    const result = AuthenticationService.loginUser(user);
     return false
   }
 
