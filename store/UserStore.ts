@@ -7,7 +7,7 @@ interface User {
 }
 
 class UserStore {
-  user: User;
+  @observable user: User;
   private rootStore: RootStore;
 
 
@@ -18,6 +18,10 @@ class UserStore {
       token: ""
     };
     makeAutoObservable(this);
+  }
+  
+  @computed get isLoggedIn(): boolean {
+    return this.user.name.length > 0 && this.user.token.length > 0;
   }
 
   @action
