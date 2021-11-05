@@ -10,12 +10,14 @@ import React, {
   useState
 } from "react";
 import PageProps from "../PageProps";
+import AuthenticationService from "../../services/authentication.service";
 
 
 const Login: any = inject("rootStore")(
   observer((props: PageProps) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [canLogin, setCanLogin] = useState(true);
 
     const updateUsername = (event: ChangeEvent<HTMLInputElement>) => {
       setUsername(event.target.value);
@@ -26,13 +28,25 @@ const Login: any = inject("rootStore")(
     }
 
     const loginUserFormSubmit = (event: FormEvent<HTMLFormElement>): void  => {
+      event.preventDefault();
+      loginUser();
     }
 
     const loginUserButton = (event: React.MouseEvent<HTMLButtonElement>): void => {
+      event.preventDefault();
+      loginUser();
     }
 
     const loginUser = () => {
-
+      if (password.length === 0 || username.length === 0) {
+        debugger;
+        return;
+      }
+      //setCanLogin(false);
+      AuthenticationService.loginUser({
+        username,
+        password
+      })
     }
 
     return (
@@ -97,7 +111,7 @@ const Login: any = inject("rootStore")(
             value={password}
             onChange={updatePassword}
           />
-          <button onClick={loginUserButton}>Login</button>
+          <button onClick={loginUserButton} disabled={!canLogin}>Login</button>
         </form>
       </div>
     );
