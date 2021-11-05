@@ -7,7 +7,7 @@ class AuthenticationService {
       body: JSON.stringify(user)
     });
     const response = await responseRaw.json()
-    console.log(response);
+    return response;
   }
 }
 

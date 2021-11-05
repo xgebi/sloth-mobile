@@ -11,13 +11,20 @@ import React, {
 } from "react";
 import PageProps from "../PageProps";
 import AuthenticationService from "../../services/authentication.service";
+import {ErrorData, UserData} from "../../services/interfaces/AuthenticationData";
+import {useRouter} from "next/router";
+import RootStore from "../../store/RootStore";
+import UserStore from "../../store/UserStore";
 
 
 const Login: any = inject("rootStore")(
   observer((props: PageProps) => {
+    const rootStore: RootStore = props.rootStore!;
+    const userStore: UserStore = props.rootStore?.userStore!;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [canLogin, setCanLogin] = useState(true);
+    const router = useRouter();
 
     const updateUsername = (event: ChangeEvent<HTMLInputElement>) => {
       setUsername(event.target.value);
@@ -37,16 +44,24 @@ const Login: any = inject("rootStore")(
       loginUser();
     }
 
-    const loginUser = () => {
+    const loginUser = async () => {
       if (password.length === 0 || username.length === 0) {
-        debugger;
         return;
       }
-      //setCanLogin(false);
-      AuthenticationService.loginUser({
+      setCanLogin(false);
+      const result: UserData | ErrorData = await AuthenticationService.loginUser({
         username,
         password
-      })
+      });
+      if (result.hasOwnProperty("error")) {
+        console.log("it's an error");
+      } else if ((new Date()).getMilliseconds() < (result as UserData).expiryTime) {
+        userStore.logIn(result as UserData);
+        router.push({
+          pathname: '/',
+        })
+      }
+      setCanLogin(true);
     }
 
     return (
@@ -63,7 +78,7 @@ const Login: any = inject("rootStore")(
          grid-template-columns: 1fr auto 1fr;
          grid-template-rows: 1fr auto 1fr;
          height: 100vh;
-         background:#0495ff;
+         background: var(--background);
          box-shadow:2px 2px #ddd;
         }
         
@@ -73,7 +88,7 @@ const Login: any = inject("rootStore")(
           display: flex;
           flex-flow: column;
           padding: 2rem;
-          background: whitesmoke;
+          background: var(--white);
           border-radius: .25rem;
           gap: .75rem;
         }
@@ -92,7 +107,7 @@ const Login: any = inject("rootStore")(
           border:0;
           box-shadow:2px 2px #ddd;
           border-radius:.25rem;
-          color: whitesmoke;
+          color: var(--white);
           font-weight: 700;
 
         }

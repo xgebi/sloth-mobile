@@ -26,7 +26,7 @@ const Login: any = inject("rootStore")(
 
         <style jsx>{`
         
-      `}</style>
+        `}</style>
 
 
       </div>
