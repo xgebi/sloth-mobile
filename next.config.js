@@ -8,6 +8,7 @@ module.exports = withPWA({
   },
   env: {
     apiUrl: 'http://localhost:5000',
+    nextUrl: 'http://localhost:3000',
   },
   reactStrictMode: true,
 });

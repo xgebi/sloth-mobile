@@ -25,3 +25,18 @@ a {
   grid-template-columns: 10rem auto;
   gap: 1rem;
 }
+
+.sidebar {
+  height: 100vh;
+  padding: 1rem;
+  background: var(--background)
+}
+
+.sidebar ul {
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar ul a {
+  color: var(--white);
+}

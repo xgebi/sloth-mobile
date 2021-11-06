@@ -32,6 +32,7 @@ class MyApp extends App {
       <Provider
         rootStore={this.state.rootStore}
         userStore={this.state.rootStore.userStore}
+        postStore={this.state.rootStore.postStore}
       >
         <Component {...pageProps} />
       </Provider>

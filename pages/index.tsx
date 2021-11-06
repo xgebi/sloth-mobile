@@ -9,11 +9,13 @@ import UserStore from "../store/UserStore";
 import PageProps from "./PageProps";
 import useLoginRedirectEffect from "../effects/LoginRedirect.effect";
 import Navigation from "../components/navigation";
+import PostStore from "../store/PostStore";
 
 const Home: any = inject("rootStore")(
   observer((props: PageProps) => {
     const rootStore: RootStore = props.rootStore!;
     const userStore: UserStore = props.rootStore?.userStore!;
+    const postStore: PostStore = props.rootStore?.postStore!;
     const router = useRouter();
 
     useEffect(() => useLoginRedirectEffect(userStore.isLoggedIn, router));
@@ -26,9 +28,10 @@ const Home: any = inject("rootStore")(
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <Navigation permissionsLevel={userStore.user.permissionsLevel} />
-
-        <h1>Dashboard</h1>
+        <Navigation permissionsLevel={userStore.user.permissionsLevel} postTypes={postStore.postTypes} activePage={"dashboard"}/>
+        <main>
+          <h1>Dashboard</h1>
+        </main>
       </div>
     );
   })

@@ -26,6 +26,10 @@ class UserStore {
     return this.user.uuid.length > 0 && this.user.token.length > 0;
   }
 
+  @computed get token(): string {
+    return `${this.user.displayName}:${this.user.uuid}:${this.user.token}`;
+  }
+
   @action
   public logIn(user: UserData): void {
     this.user = user;

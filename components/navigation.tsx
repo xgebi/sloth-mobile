@@ -1,36 +1,38 @@
-import React from "react";
+import React, {useState} from "react";
 import Link from 'next/link'
+import PostType from "../services/interfaces/PostTypesData";
 
 interface NavigationProps {
   permissionsLevel: number,
+  postTypes: PostType[],
+  activePage: string,
 }
 
-const Navigation = ({permissionsLevel}: NavigationProps) => {
+const Navigation = ({permissionsLevel, postTypes, activePage}: NavigationProps) => {
+  console.log(activePage);
+  const displayPostTypes = () => {
+    const res = []
+    for (const item of postTypes) {
+      res.push(
+        (<li key={item["slug"]} className={item.uuid === activePage ? "active" : ""}>
+          <Link href={`/post-list/${item.uuid}`}>
+            {item["displayName"]}
+          </Link>
+        </li>)
+      );
+    }
+    return res;
+  }
 
   return (
-    <nav>
-      <style jsx>{`
-        nav {
-          height: 100vh;
-          padding: 1rem;
-          background: var(--background)
-        }
-        
-        ul {
-          padding: 0;
-          list-style: none;
-        }
-        
-        ul a {
-          color: var(--white);
-        }
-        `}</style>
+    <nav className="sidebar">
       <ul>
-        <li>
+        <li className={"dashboard" === activePage ? "active" : ""}>
           <Link href="/">
             <a>Dashboard</a>
           </Link>
         </li>
+        {displayPostTypes()}
       </ul>
     </nav>
   )

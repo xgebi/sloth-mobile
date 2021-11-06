@@ -1,21 +1,27 @@
 import {action, computed, makeAutoObservable, observable} from "mobx";
-import UserInformation from "../services/interfaces/UserInformation";
 import RootStore from "./RootStore";
-import UserCredentials from "../services/interfaces/UserCredentials";
-import AuthenticationService from "../services/authentication.service";
+import PostType from "../services/interfaces/PostTypesData";
+import PostData from "../services/interfaces/PostData";
+import PostService from "../services/post.service";
 
 class PostStore {
-  @observable user: UserInformation;
+  @observable postTypes: PostType[];
+  @observable post: PostData;
   private rootStore: RootStore;
 
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
-    this.user = {
-      name: "",
-      token: ""
+    this.postTypes = [];
+    this.post = {
+
     };
     makeAutoObservable(this);
+  }
+
+  @action
+  async populatePostTypes() {
+    this.postTypes = await PostService.getPostTypes(this.rootStore.userStore.token);
   }
 }
 

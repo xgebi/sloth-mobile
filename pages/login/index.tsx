@@ -15,12 +15,14 @@ import {ErrorData, UserData} from "../../services/interfaces/AuthenticationData"
 import {useRouter} from "next/router";
 import RootStore from "../../store/RootStore";
 import UserStore from "../../store/UserStore";
+import PostStore from "../../store/PostStore";
 
 
 const Login: any = inject("rootStore")(
   observer((props: PageProps) => {
     const rootStore: RootStore = props.rootStore!;
     const userStore: UserStore = props.rootStore?.userStore!;
+    const postStore: PostStore = props.rootStore?.postStore!;
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [canLogin, setCanLogin] = useState(true);
@@ -57,6 +59,7 @@ const Login: any = inject("rootStore")(
         console.log("it's an error");
       } else if ((new Date()).getMilliseconds() < (result as UserData).expiryTime) {
         userStore.logIn(result as UserData);
+        await postStore.populatePostTypes();
         router.push({
           pathname: '/',
         })
