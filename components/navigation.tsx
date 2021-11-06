@@ -15,13 +15,24 @@ const Navigation = ({permissionsLevel, postTypes, activePage, rootStore}: Naviga
   const displayPostTypes = () => {
     const res = []
     for (const item of postTypes) {
-      res.push(
-        (<li key={item["slug"]} className={item.uuid === activePage ? "active" : ""}>
-          <Link href={`/post-list/${item.uuid}`} shallow={false} replace={true}>
+      if (item.uuid !== activePage) {
+        res.push(
+          <li key={item["slug"]}>
+            <Link href={`/post-list/${item.uuid}`} shallow={false} replace={true}>
+              {item["displayName"]}
+            </Link>
+          </li>
+        );
+      } else {
+        res.push(<li key={item["slug"]} className={"active"}>
             {item["displayName"]}
-          </Link>
-        </li>)
-      );
+            <ul>
+              <li>
+                <Link href={"/post/new"}>New</Link>
+              </li>
+            </ul>
+          </li>);
+      }
     }
     return res;
   };

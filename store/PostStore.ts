@@ -29,10 +29,8 @@ class PostStore {
 
   @action
   async populatePostList(postType: string) {
-    const self = this;
-    PostService.getPostsList(this.rootStore.userStore.token, postType, this.rootStore.language?.uuid!).then((res) => {
-      self.list = res;
-    });
+    const res = await PostService.getPostsList(this.rootStore.userStore.token, postType, this.rootStore.language?.uuid!)
+    this.list = res;
   }
 
   @action
