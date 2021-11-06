@@ -26,7 +26,7 @@ const Login: any = inject("rootStore")(
     const id = router.query.id as string;
     const postType: PostType = postStore.postTypes.filter(pt => pt.uuid === id).pop() as PostType;
     const createTableContents = async () => {
-      const postList: PostListData[] = await PostService.getPostsList(userStore.token, postType.uuid);
+      const postList: PostListData[] = await PostService.getPostsList(userStore.token, postType.uuid, "");
       const res = [];
       for (const item of postList) {
         res.push(
@@ -76,7 +76,6 @@ const Login: any = inject("rootStore")(
             </tr>
             </thead>
             <tbody>
-            {createTableContents()}
             </tbody>
           </table>
         </main>
