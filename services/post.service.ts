@@ -25,7 +25,7 @@ class PostService {
       cache: "no-cache",
       headers
     })
-    return (await responseRaw.json()) as PostListData[];
+    return await responseRaw.json() as Promise<PostListData[]>;
   }
 }
 

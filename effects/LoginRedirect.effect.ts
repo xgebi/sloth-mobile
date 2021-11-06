@@ -1,11 +1,12 @@
 import {NextRouter, Router} from "next/router";
 
-function useLoginRedirectEffect(loggedIn: boolean, router: NextRouter) {
+function loginRedirect(loggedIn: boolean, router: NextRouter) {
   if (!loggedIn) {
+    console.log(router);
     router.push({
       pathname: '/login',
     })
   }
 }
 
-export default useLoginRedirectEffect;
+export default loginRedirect;

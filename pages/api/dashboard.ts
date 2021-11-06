@@ -6,7 +6,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<UserData | ErrorData>
 ) {
-  console.log(`${process.env.apiUrl}/api/login`);
   const apiResRaw = await fetch(`${process.env.apiUrl}/api/dashboard`, {
     method: 'POST',
     body: req.body

@@ -60,6 +60,7 @@ const Login: any = inject("rootStore")(
       } else if ((new Date()).getMilliseconds() < (result as UserData).expiryTime) {
         userStore.logIn(result as UserData);
         await postStore.populatePostTypes();
+        await rootStore.setLanguages();
         router.push({
           pathname: '/',
         })
