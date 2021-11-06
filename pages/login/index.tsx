@@ -9,7 +9,7 @@ import React, {
   ReactEventHandler,
   useState
 } from "react";
-import PageProps from "../PageProps";
+import PageProps from "../../services/interfaces/PageProps";
 import AuthenticationService from "../../services/authentication.service";
 import {ErrorData, UserData} from "../../services/interfaces/AuthenticationData";
 import {useRouter} from "next/router";

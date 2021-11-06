@@ -2,7 +2,7 @@ import styles from './login.page.module.css';
 import Head from 'next/head'
 import {inject, observer} from "mobx-react";
 import React, { useEffect } from "react";
-import PageProps from "../../PageProps";
+import PageProps from "../../../services/interfaces/PageProps";
 import Navigation from "../../../components/navigation";
 import RootStore from "../../../store/RootStore";
 import UserStore from "../../../store/UserStore";

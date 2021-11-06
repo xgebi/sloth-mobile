@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import React, {useEffect} from "react";
 import RootStore from "../store/RootStore";
 import UserStore from "../store/UserStore";
-import PageProps from "./PageProps";
+import PageProps from "../services/interfaces/PageProps";
 import useLoginRedirectEffect from "../effects/LoginRedirect.effect";
 import Navigation from "../components/navigation";
 import PostStore from "../store/PostStore";

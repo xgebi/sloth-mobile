@@ -9,7 +9,7 @@ import React, {
   ReactEventHandler,
   useState
 } from "react";
-import PageProps from "../PageProps";
+import PageProps from "../../services/interfaces/PageProps";
 
 
 const Login: any = inject("rootStore")(
