@@ -3,6 +3,7 @@ import Link from 'next/link'
 import PostType from "../services/interfaces/PostTypesData";
 import Language from "../services/interfaces/Language";
 import RootStore from "../store/RootStore";
+import {inject, observer} from "mobx-react";
 
 interface NavigationProps {
   permissionsLevel: number,
@@ -10,12 +11,13 @@ interface NavigationProps {
   activePage: string,
   rootStore: RootStore,
 }
-
-const Navigation = ({permissionsLevel, postTypes, activePage, rootStore}: NavigationProps) => {
-  const displayPostTypes = () => {
+@inject('rootStore')
+@observer
+class Navigation extends React.Component<NavigationProps> {
+  displayPostTypes() {
     const res = []
-    for (const item of postTypes) {
-      if (item.uuid !== activePage) {
+    for (const item of this.props.postTypes) {
+      if (item.uuid !== this.props.activePage) {
         res.push(
           <li key={item["slug"]}>
             <Link href={`/post-list/${item.uuid}`} shallow={false} replace={true}>
@@ -25,45 +27,47 @@ const Navigation = ({permissionsLevel, postTypes, activePage, rootStore}: Naviga
         );
       } else {
         res.push(<li key={item["slug"]} className={"active"}>
-            {item["displayName"]}
-            <ul>
-              <li>
-                <Link href={"/post/new"}>New</Link>
-              </li>
-            </ul>
-          </li>);
+          {item["displayName"]}
+          <ul>
+            <li>
+              <Link href={"/post/new"}>New</Link>
+            </li>
+          </ul>
+        </li>);
       }
     }
     return res;
   };
 
-  const languageList = () => {
+  languageList() {
     const res = [];
-    for (const lang of rootStore.languages) {
+    for (const lang of this.props.rootStore.languages) {
       res.push(<option key={lang["shortName"]} value={lang["uuid"]}>{lang["longName"]}</option>)
     }
     return res;
   }
 
-  const changeLanguage = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    rootStore.setLanguageById(event.target.value);
+  changeLanguage(event: React.ChangeEvent<HTMLSelectElement>) {
+    this.props.rootStore.setLanguageById(event.target.value);
   };
 
-  return (
+  render() {
+    return (
     <nav className="sidebar">
-      <select onChange={changeLanguage}>
-        {languageList()}
+      <select onChange={this.changeLanguage}>
+        {this.languageList()}
       </select>
       <ul>
-        <li className={"dashboard" === activePage ? "active" : ""}>
+        <li className={"dashboard" === this.props.activePage ? "active" : ""}>
           <Link href="/" shallow={false}>
             <a>Dashboard</a>
           </Link>
         </li>
-        {displayPostTypes()}
+        {this.displayPostTypes()}
       </ul>
     </nav>
   )
+  }
 }
 
 export default Navigation;
