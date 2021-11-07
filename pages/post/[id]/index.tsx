@@ -3,10 +3,40 @@ import Head from 'next/head'
 import {inject, observer} from "mobx-react";
 import React from "react";
 import PageProps from "../../../services/interfaces/PageProps";
+import loginRedirect from "../../../effects/LoginRedirect.effect";
+
+type PostState = {
+  loading: boolean,
+}
 
 @inject('rootStore', 'userStore', 'postStore')
 @observer
 class PostPage extends React.Component<PageProps> {
+  state: PostState
+
+  async startLoading() {
+    this.setState({...this.state, loading: true});
+  }
+
+  async loadData() {
+    await this.props.postStore?.populatePostList(this.props.router.query.id as string);
+    this.setState({
+      ...this.state,
+      loading: false,
+    });
+  }
+
+  async componentDidMount() {
+    loginRedirect(this.props.userStore?.isLoggedIn!, this.props.router);
+    this.props.router.events.on("routeChangeStart", this.startLoading.bind(this))
+    this.props.router.events.on("routeChangeComplete", this.loadData.bind(this));
+  }
+
+  componentWillUnmount() {
+    this.props.router.events.off("routeChangeStart", this.startLoading.bind(this))
+    this.props.router.events.off("routeChangeComplete", this.loadData.bind(this));
+  }
+
   render() {
     return (
       <div className={'page-style'}>
