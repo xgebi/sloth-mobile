@@ -26,19 +26,28 @@ class PostListPage extends React.Component<PageProps> {
     }
   }
 
+  async startLoading() {
+    this.setState({...this.state, loading: true});
+  }
+
+  async loadData() {
+    await this.props.postStore?.populatePostList(this.props.router.query.id as string);
+    this.setState({
+      ...this.state,
+      loading: false,
+      postType: this.props.postStore?.postTypes.filter(pt => pt.uuid === this.props.router.query.id as string).pop()!
+    });
+  }
+
   async componentDidMount() {
     loginRedirect(this.props.userStore?.isLoggedIn!, this.props.router);
-    this.props.router.events.on("routeChangeStart", () => {
-      this.setState({...this.state, loading: true});
-    })
-    this.props.router.events.on("routeChangeComplete", async () => {
-      await this.props.postStore?.populatePostList(this.props.router.query.id as string);
-      this.setState({
-        ...this.state,
-        loading: false,
-        postType: this.props.postStore?.postTypes.filter(pt => pt.uuid === this.props.router.query.id as string).pop()!
-      });
-    });
+    this.props.router.events.on("routeChangeStart", this.startLoading.bind(this))
+    this.props.router.events.on("routeChangeComplete", this.loadData.bind(this));
+  }
+
+  componentWillUnmount() {
+    this.props.router.events.off("routeChangeStart", this.startLoading.bind(this))
+    this.props.router.events.off("routeChangeComplete", this.loadData.bind(this));
   }
 
   render() {
