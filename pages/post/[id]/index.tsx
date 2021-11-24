@@ -4,22 +4,34 @@ import {inject, observer} from "mobx-react";
 import React from "react";
 import PageProps from "../../../services/interfaces/PageProps";
 import loginRedirect from "../../../effects/LoginRedirect.effect";
+import Navigation from "../../../components/navigation";
+import {withRouter} from "next/router";
+
+type PostType = {
+  uuid: string,
+}
 
 type PostState = {
   loading: boolean,
+  postType: PostType
 }
 
 @inject('rootStore', 'userStore', 'postStore')
 @observer
 class PostPage extends React.Component<PageProps> {
-  state: PostState
+  state: PostState = {
+    loading: true,
+    postType: {
+      uuid: "",
+    },
+  };
 
   async startLoading() {
     this.setState({...this.state, loading: true});
   }
 
   async loadData() {
-    await this.props.postStore?.populatePostList(this.props.router.query.id as string);
+    await this.props.postStore?.populatePost(this.props.router.query.id as string);
     this.setState({
       ...this.state,
       loading: false,
@@ -33,6 +45,7 @@ class PostPage extends React.Component<PageProps> {
   }
 
   componentWillUnmount() {
+    this.props.postStore?.depopulatePost();
     this.props.router.events.off("routeChangeStart", this.startLoading.bind(this))
     this.props.router.events.off("routeChangeComplete", this.loadData.bind(this));
   }
@@ -50,6 +63,13 @@ class PostPage extends React.Component<PageProps> {
         
         `}</style>
 
+        <Navigation
+          permissionsLevel={this.props.userStore?.user.permissionsLevel!}
+          postTypes={this.props.postStore?.postTypes!}
+          activePage={this.state.postType.uuid}
+          rootStore={this.props.rootStore!}
+        />
+
         <main>
           <h1>Edit post</h1>
         </main>
@@ -58,4 +78,4 @@ class PostPage extends React.Component<PageProps> {
   }
 }
 
-export default PostPage;
+export default withRouter(PostPage);

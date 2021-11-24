@@ -7,7 +7,7 @@ import PostListData from "../services/interfaces/PostListData";
 
 class PostStore {
   @observable postTypes: PostType[];
-  @observable post: PostData;
+  @observable post: PostData | undefined;
   @observable list: PostListData[];
   private rootStore: RootStore;
 
@@ -32,6 +32,18 @@ class PostStore {
     const res = await PostService.getPostsList(this.rootStore.userStore.token, postType, this.rootStore.language?.uuid!)
     this.list = res;
   }
+
+  @action
+  async populatePost(postId: string) {
+    const res = await PostService.getPost(this.rootStore.userStore.token, postId);
+    console.log("res", res);
+    this.post = res;
+  }
+
+  @action
+  depopulatePost() {
+    this.post = undefined;
+}
 
   @action
   clearList() {
