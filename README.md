@@ -1,3 +1,6 @@
+Since Safari on iOS 15 supports things like web components, this project is dead. It was an interesting experience to get back into react but for the time being this adventure is over.
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
